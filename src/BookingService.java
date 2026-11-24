@@ -12,20 +12,17 @@ public class BookingService {
 
     private int nextBookingId = 1;
 
-    // Create a new booking
     public Booking bookMeetingRoom(
             LocalDate date,
             LocalTime startTime,
             LocalTime endTime) {
 
-        // Validate end time
         if (!endTime.isAfter(startTime)) {
             throw new IllegalArgumentException(
                     "End time must be after start time."
             );
         }
 
-        // Validate exactly one hour
         long duration = Duration.between(
                 startTime, endTime
         ).toMinutes();
@@ -36,14 +33,12 @@ public class BookingService {
             );
         }
 
-        // Check overlapping bookings
         if (isOverlapping(date, startTime, endTime)) {
             throw new IllegalArgumentException(
                     "Meeting room is already booked for this time slot."
             );
         }
 
-        // Create booking
         Booking booking = new Booking(
                 nextBookingId++,
                 date,
@@ -56,7 +51,6 @@ public class BookingService {
         return booking;
     }
 
-    // Check overlapping bookings
     private boolean isOverlapping(
             LocalDate date,
             LocalTime startTime,
@@ -83,7 +77,6 @@ public class BookingService {
         return false;
     }
 
-    // View all bookings
     public List<Booking> getAllBookings() {
 
         ArrayList<Booking> sortedBookings =
@@ -97,7 +90,6 @@ public class BookingService {
         return sortedBookings;
     }
 
-    // Cancel booking
     public boolean cancelBooking(int bookingId) {
 
         return bookings.removeIf(
